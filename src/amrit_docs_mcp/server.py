@@ -1,7 +1,7 @@
 """MCP server entry point for amrit-docs.
 
 Exposes a `search_amrit_docs` tool that any MCP-compatible AI agent
-(Claude Code, Cursor, Copilot, Gemini Code Assist) can call to retrieve
+(Cursor, Copilot, Claude Code, Gemini Code Assist) can call to retrieve
 relevant chunks from indexed AMRIT repository documentation.
 
 Run via stdio transport:

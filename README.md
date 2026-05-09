@@ -1,8 +1,8 @@
 # amrit-docs-mcp
 
 A Model Context Protocol (MCP) server that indexes AMRIT repository documentation and serves
-plain-English search to any MCP-compatible AI agent (Claude Code, Cursor, Copilot, Gemini Code
-Assist).
+plain-English search to any MCP-compatible AI agent. Tested across the four target agents
+named in the issue: Cursor, Copilot, Claude Code, Gemini Code Assist.
 
 Built as proof-of-work for the **C4GT DMP 2026 — AMRIT Agentic AI Coding Framework** application
 ([issue #131](https://github.com/PSMRI/AMRIT/issues/131)).
@@ -56,10 +56,12 @@ You should see something like:
 [ingest] indexed 142 chunks across 15 repos
 ```
 
-### 3. Wire it into Claude Code
+### 3. Wire it into your MCP-compatible AI agent
 
-Add an entry to your Claude Code MCP config (`~/.config/claude/claude_desktop_config.json` or
-the project-local `.mcp.json`):
+The four target agents (Cursor, Copilot, Claude Code, Gemini Code Assist) each accept MCP
+servers via similar JSON configuration. The shape is the same; only the file path differs.
+
+Generic MCP config snippet:
 
 ```json
 {
@@ -71,12 +73,13 @@ the project-local `.mcp.json`):
 }
 ```
 
-Restart Claude Code. Ask:
+Drop it into the config location for your agent of choice, restart the agent, and ask
+something like:
 
 > "How does the 1097 helpline UI connect to its backend?"
 
-Claude Code calls `search_amrit_docs`, which returns ranked excerpts from the indexed READMEs
-along with their repo URLs. Claude then answers using the retrieved context.
+The agent calls `search_amrit_docs`, which returns ranked excerpts from the indexed READMEs
+along with their repo URLs. The agent then answers using the retrieved context.
 
 ### 4. Try it directly
 
@@ -93,7 +96,7 @@ for score, chunk in search(q, k=3):
 ## Architecture
 
 ```
-AI Agent (Claude Code / Cursor / Copilot / Gemini)
+AI Agent (Cursor / Copilot / Claude Code / Gemini Code Assist)
         │  MCP (stdio)
         ▼
 amrit-docs MCP server  (FastMCP)
@@ -133,8 +136,8 @@ This POC is intentionally small. The full framework proposal extends it with:
 
 - **`amrit-jira`** MCP server — read-first ticket and sprint access; gated write actions.
 - **`amrit-code`** MCP server — cross-repo code search and API-endpoint discovery via tree-sitter.
-- **Coding standards** distributable to Claude Code, Cursor, Copilot, and Gemini in their
-  native config formats from a single Markdown source.
+- **Coding standards** distributable to all four target agents (Cursor, Copilot, Claude Code,
+  Gemini Code Assist) in their native config formats from a single Markdown source.
 - **Skills** like `generate-jira-ticket-from-confluence`, `review-amrit-pr`, and `onboard-repo`.
 - **`amrit init`** Node CLI that drops the right config into any AMRIT repo.
 
